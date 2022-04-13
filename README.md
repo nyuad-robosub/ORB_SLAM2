@@ -1,7 +1,7 @@
-#SETUP WITH ROS TUTORIAL
+# SETUP WITH ROS TUTORIAL
 
 
-#FORK FIXES
+# FORK FIXES
 This fork fixes numerous issues with current orbslam2 lib. 
 
 
