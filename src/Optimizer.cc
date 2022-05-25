@@ -273,7 +273,7 @@ int Optimizer::PoseOptimization(Frame *pFrame)
     const float deltaMono = sqrt(5.991);
     const float deltaStereo = sqrt(7.815);
 
-
+    
     {
     unique_lock<mutex> lock(MapPoint::mGlobalMutex);
 
@@ -438,6 +438,8 @@ int Optimizer::PoseOptimization(Frame *pFrame)
         }
 
         if(optimizer.edges().size()<10)
+            break;
+        if((nInitialCorrespondences-nBad)<5)
             break;
     }    
 
