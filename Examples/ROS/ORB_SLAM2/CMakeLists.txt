@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.4.6)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-
 rosbuild_init()
+# DepthAI Library
+#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/../../../../depthai-core-old" depthai-core EXCLUDE_FROM_ALL)
+#add_subdirectory(depthai-core EXCLUDE_FROM_ALL)
 
 IF(NOT ROS_BUILD_TYPE)
   SET(ROS_BUILD_TYPE Release)
@@ -30,14 +32,18 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
 
-find_package(OpenCV 3.0 QUIET)
-if(NOT OpenCV_FOUND)
-   find_package(OpenCV 2.4.3 QUIET)
-   if(NOT OpenCV_FOUND)
-      message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
-   endif()
-endif()
+#find_package(depthai CONFIG REQUIRED)
 
+# find_package(OpenCV 3.0 QUIET)
+# if(NOT OpenCV_FOUND)
+#    find_package(OpenCV 2.4.3 QUIET)
+#    if(NOT OpenCV_FOUND)
+#       message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
+#    endif()
+# endif()
+find_package(OpenCV 3.2 REQUIRED)
+#find_package(depthai-core REQUIRED)
+find_package(depthai CONFIG REQUIRED)
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
 
@@ -46,10 +52,13 @@ ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/../../../
 ${PROJECT_SOURCE_DIR}/../../../include
 ${Pangolin_INCLUDE_DIRS}
+#depthai::core
 )
 
-set(LIBS 
-${OpenCV_LIBS} 
+
+set(LIBS
+${OpenCV_LIBS}
+depthai::core
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/../../../Thirdparty/DBoW2/lib/libDBoW2.so
@@ -58,7 +67,7 @@ ${PROJECT_SOURCE_DIR}/../../../lib/libORB_SLAM2.so
 -lboost_system
 )
 
-# Node for monocular camera
+# Node for monocular /home/rami/nr22-software/include/depthai-core/build/libdepthai-opencv.acamera
 rosbuild_add_executable(Mono
 src/ros_mono.cc
 )
@@ -94,5 +103,20 @@ src/ros_rgbd.cc
 
 target_link_libraries(RGBD
 ${LIBS}
+)
+
+# Node for stereo OAKD camera
+rosbuild_add_executable(STEREO_OAKD
+src/ros_oakd/ros_stereo_oakd.cc
+)
+
+target_link_libraries(STEREO_OAKD PRIVATE
+${LIBS}
+#depthai-core
+)
+
+#ROS LAUNCH FILES CONFIGURATION
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )
 
