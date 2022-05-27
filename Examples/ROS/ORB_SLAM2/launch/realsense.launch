@@ -3,7 +3,7 @@
 <param name="use_sim_time" value="false"></param>
 <arg name="PATH_TO_VOCABULARY" value="$(find ORB_SLAM2)/../../../Vocabulary/ORBvoc.txt"></arg>
 <arg name="PATH_TO_SETTINGS_FILE" value="$(find ORB_SLAM2)/realsense.yaml"></arg>
-<node name="ORB_SLAM2" pkg="ORB_SLAM2" type="RGBD" args="$(arg PATH_TO_VOCABULARY) $(arg PATH_TO_SETTINGS_FILE)" output="screen"></node>
+<node name="ORB_SLAM2" pkg="ORB_SLAM2" type="STEREO_OAKD" args="$(arg PATH_TO_VOCABULARY) $(arg PATH_TO_SETTINGS_FILE)" output="screen"></node>
 
 <param name="child_frame_id" value="camera_color_optical_frame" type="str"></param>
 
